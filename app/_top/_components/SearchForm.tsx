@@ -2,10 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaSun } from "react-icons/fa6";
 import { z } from "zod";
 import { SKIN_TYPES, SPF_OPTIONS } from "@/lib/uv";
+
+// 前回検索した入力内容を localStorage に保持するキー。
+const LAST_PLACE_KEY = "yakanai:lastPlace";
+const LAST_SKIN_KEY = "yakanai:lastSkin";
+const LAST_SPF_KEY = "yakanai:lastSpf";
+
+const VALID_SKINS = SKIN_TYPES.map((t) => t.value) as number[];
+const VALID_SPFS = SPF_OPTIONS.map((o) => o.value) as number[];
 
 const schema = z.object({
   place: z.string().trim().min(1, "地名を入力してください"),
@@ -29,13 +38,31 @@ export const SearchForm = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { place: defaultPlace, skin: defaultSkin, spf: defaultSpf },
   });
 
+  // SSR とのハイドレーション不整合を避けるため、初期値は空のままマウント後に復元する。
+  // page 側で地名が指定されている場合 (defaultPlace) はそちらを優先。
+  useEffect(() => {
+    if (defaultPlace) return;
+    const savedPlace = localStorage.getItem(LAST_PLACE_KEY);
+    if (savedPlace) setValue("place", savedPlace);
+
+    const savedSkin = Number(localStorage.getItem(LAST_SKIN_KEY));
+    if (VALID_SKINS.includes(savedSkin)) setValue("skin", savedSkin);
+
+    const savedSpf = Number(localStorage.getItem(LAST_SPF_KEY));
+    if (VALID_SPFS.includes(savedSpf)) setValue("spf", savedSpf);
+  }, [defaultPlace, setValue]);
+
   const onSubmit = handleSubmit(({ place, skin, spf }) => {
+    localStorage.setItem(LAST_PLACE_KEY, place);
+    localStorage.setItem(LAST_SKIN_KEY, String(skin));
+    localStorage.setItem(LAST_SPF_KEY, String(spf));
     router.push(
       `/result/${encodeURIComponent(place)}?skin=${skin}&spf=${spf}`,
     );
