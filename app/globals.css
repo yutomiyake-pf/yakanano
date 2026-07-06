@@ -1,0 +1,54 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: yakanai --default;
+}
+@plugin "@tailwindcss/typography";
+
+/* 日差しを感じさせるサニーテーマ (暖色ベース) */
+@plugin "daisyui/theme" {
+  name: "yakanai";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: oklch(99% 0.015 85);
+  --color-base-200: oklch(96% 0.04 80);
+  --color-base-300: oklch(91% 0.07 75);
+  --color-base-content: oklch(32% 0.05 60);
+
+  --color-primary: oklch(70% 0.19 45);
+  --color-primary-content: oklch(99% 0.02 85);
+  --color-secondary: oklch(83% 0.16 85);
+  --color-secondary-content: oklch(32% 0.08 60);
+  --color-accent: oklch(72% 0.14 230);
+  --color-accent-content: oklch(99% 0.02 85);
+  --color-neutral: oklch(40% 0.05 60);
+  --color-neutral-content: oklch(98% 0.02 85);
+
+  --color-info: oklch(72% 0.14 230);
+  --color-info-content: oklch(99% 0.02 230);
+  --color-success: oklch(72% 0.17 145);
+  --color-success-content: oklch(99% 0.02 145);
+  --color-warning: oklch(82% 0.16 85);
+  --color-warning-content: oklch(30% 0.08 70);
+  --color-error: oklch(64% 0.21 25);
+  --color-error-content: oklch(99% 0.02 25);
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), var(--font-noto-jp), system-ui, sans-serif;
+}
+
+/* 日差しのグラデーション背景 */
+body {
+  background-image: linear-gradient(
+    180deg,
+    oklch(97% 0.06 80) 0%,
+    oklch(99% 0.015 85) 40%
+  );
+  background-attachment: fixed;
+}
