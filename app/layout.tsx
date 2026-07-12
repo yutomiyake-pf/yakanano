@@ -37,6 +37,9 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_NAME }],
   applicationName: SITE_NAME,
   alternates: { canonical: "/" },
+  verification: {
+    google: "luE1L6y7GS1pc5uGmP9UZ71sKdrlqb6OOVz_TilF8Ok",
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
