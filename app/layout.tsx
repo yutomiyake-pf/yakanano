@@ -37,6 +37,14 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_NAME }],
   applicationName: SITE_NAME,
   alternates: { canonical: "/" },
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-96x.png", type: "image/png", sizes: "96x96" },
+    ],
+    apple: [{ url: "/icon-180x.png", type: "image/png", sizes: "180x180" }],
+  },
   openGraph: {
     type: "website",
     locale: SITE_LOCALE,
