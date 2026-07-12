@@ -5,8 +5,7 @@ export const SITE_NAME = "yakanano";
 
 export const SITE_COMPANY = "Astra Tech株式会社";
 
-// 空文字なら Google Analytics を読み込まない。
-export const GA_MEASUREMENT_ID = "";
+export const GA_MEASUREMENT_ID = "G-6CTYW3EE1D";
 
 export const SITE_TAGLINE = "今日、何分で日焼けする？";
 
