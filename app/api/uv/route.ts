@@ -109,6 +109,7 @@ export async function GET(request: NextRequest) {
   };
 
   const parsed: UvResult = UvResultSchema.parse(res);
+  console.log(parsed);
 
   return NextResponse.json(parsed);
 }

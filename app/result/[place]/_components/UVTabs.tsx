@@ -14,10 +14,7 @@ interface Props {
 }
 
 const TAB_LABELS = ["今日", "明日", "明後日"];
-
-// "2026-07-06" → "7月6日(日)" / "7/6"
 const formatDate = (iso: string): string => dayjs(iso).format("M月D日(dd)");
-const formatShortDate = (iso: string): string => dayjs(iso).format("M/D");
 
 export const UVTabs = ({ days, spf }: Props) => {
   const [active, setActive] = useState(0);
@@ -35,7 +32,7 @@ export const UVTabs = ({ days, spf }: Props) => {
             className={`tab ${i === active ? "tab-active" : ""}`}
             onClick={() => setActive(i)}
           >
-            {TAB_LABELS[i] ?? formatShortDate(d.date)}
+            {TAB_LABELS[i] ?? formatDate(d.date)}
           </button>
         ))}
       </div>
