@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaArrowLeft, FaLocationDot } from "react-icons/fa6";
 import type { UvResult } from "@/app/api/uv/type";
+import { AdBannerCarousel } from "@/app/_components/AdBannerCarousel";
 import { ForecastNotice } from "@/app/_components/ForecastNotice";
 import { UVTabs } from "./UVTabs";
 
@@ -10,6 +11,8 @@ interface Props {
 
 export const PageComponent = ({ result }: Props) => (
   <div className="mx-auto flex max-w-3xl flex-col gap-6">
+    <AdBannerCarousel />
+
     <div>
       <Link
         href="/"

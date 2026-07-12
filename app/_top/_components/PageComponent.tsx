@@ -1,10 +1,13 @@
 import { FaSun } from "react-icons/fa6";
+import { AdBannerCarousel } from "@/app/_components/AdBannerCarousel";
 import { SITE_TAGLINE } from "@/constants/site";
 import { SearchForm } from "./SearchForm";
 
 export const PageComponent = () => {
   return (
     <div className="mx-auto max-w-xl">
+      <AdBannerCarousel />
+
       <div className="mb-8 text-center">
         <div className="text-primary mb-3 flex justify-center">
           <FaSun className="text-5xl" />
