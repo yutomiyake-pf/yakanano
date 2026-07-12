@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { UvDay } from "@/app/api/uv/type";
 import { RiskBadge } from "@/app/_components/RiskBadge";
+import { dayjs } from "@/lib/dayjs";
 import { getRiskLevel } from "@/lib/uv";
 import { SunburnCard } from "./SunburnCard";
 import { UVHourlyChart } from "./UVHourlyChart";
@@ -15,14 +16,10 @@ interface Props {
 }
 
 const TAB_LABELS = ["今日", "明日", "明後日"];
-const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
 
-// "2026-07-06" → "7月6日(月)"
-const formatDate = (iso: string): string => {
-  const [y, m, d] = iso.split("-").map(Number);
-  const weekday = WEEKDAYS[new Date(y, m - 1, d).getDay()];
-  return `${m}月${d}日(${weekday})`;
-};
+// "2026-07-06" → "7月6日(日)" / "7/6"
+const formatDate = (iso: string): string => dayjs(iso).format("M月D日(dd)");
+const formatShortDate = (iso: string): string => dayjs(iso).format("M/D");
 
 export const UVTabs = ({ days, skin, spf }: Props) => {
   const [active, setActive] = useState(0);
@@ -33,8 +30,8 @@ export const UVTabs = ({ days, skin, spf }: Props) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div role="tablist" className="tabs tabs-box bg-base-100/80 self-start">
-        {days.map((_, i) => (
+      <div role="tablist" className="tabs tabs-box bg-base-100/80 flex-wrap">
+        {days.map((d, i) => (
           <button
             key={i}
             type="button"
@@ -42,7 +39,7 @@ export const UVTabs = ({ days, skin, spf }: Props) => {
             className={`tab ${i === active ? "tab-active" : ""}`}
             onClick={() => setActive(i)}
           >
-            {TAB_LABELS[i] ?? `${i + 1}日後`}
+            {TAB_LABELS[i] ?? formatShortDate(d.date)}
           </button>
         ))}
       </div>

@@ -11,7 +11,7 @@ export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 export const SITE_TAGLINE = "今日、何分で日焼けする？";
 
 export const SITE_DESCRIPTION =
-  "地域・肌タイプ・日焼け止めのSPFを入力するだけ。今日・明日・明後日の紫外線指数（UVインデックス）から「何分で日焼けするか」「どのSPFが必要か」を即座に判定します。";
+  "地域・肌タイプ・日焼け止めのSPFを入力するだけ。今日から7日間の紫外線指数（UVインデックス）から「何分で日焼けするか」「どのSPFが必要か」を即座に判定します。";
 
 export const SITE_LOCALE = "ja_JP";
 

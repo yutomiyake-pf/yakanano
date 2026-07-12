@@ -17,6 +17,8 @@ const decodePlace = (raw: string): string => {
   }
 };
 
+// skin/spf は URL クエリ由来で改ざん・欠損があり得るため、想定値のみ採用し
+// それ以外はデフォルト (肌タイプ3 / SPF30) に丸めてから計算に渡す。
 const clampSkin = (raw?: string): number => {
   const n = Number(raw);
   return Number.isInteger(n) && n >= 1 && n <= 6 ? n : 3;
@@ -31,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const place = decodePlace((await params).place);
   return {
     title: `${place} の紫外線・日焼けリスク`,
-    description: `${place} の今日・明日・明後日の紫外線指数（UVインデックス）と、日焼けまでの時間・必要なSPFを判定します。`,
+    description: `${place} の今日から7日間の紫外線指数（UVインデックス）と、日焼けまでの時間・必要なSPFを判定します。`,
     alternates: { canonical: `/result/${encodeURIComponent(place)}` },
     // 地名の組み合わせは無限にあるため重複インデックスを防ぐ。
     robots: { index: false, follow: true },

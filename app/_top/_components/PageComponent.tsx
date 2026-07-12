@@ -11,7 +11,7 @@ export const PageComponent = () => {
         </div>
         <h1 className="text-3xl font-bold">{SITE_TAGLINE}</h1>
         <p className="text-base-content/70 mt-3 text-sm">
-          地域・肌タイプ・日焼け止めのSPFを入力するだけ。今日・明日・明後日の紫外線指数から、日焼けまでの時間と必要な対策がわかります。
+          地域・肌タイプ・日焼け止めのSPFを入力するだけ。今日から7日間の紫外線指数から、日焼けまでの時間と必要な対策がわかります。
         </p>
       </div>
 

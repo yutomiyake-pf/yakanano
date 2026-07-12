@@ -25,7 +25,7 @@ export const UvResultSchema = z.object({
   displayName: z.string(),
   latitude: z.number(),
   longitude: z.number(),
-  /** 今日 / 明日 / 明後日 の3要素 */
+  /** 今日から7日分 (index 0 = 今日) */
   days: z.array(UvDaySchema),
 });
 export type UvResult = z.infer<typeof UvResultSchema>;

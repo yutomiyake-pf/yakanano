@@ -1,14 +1,7 @@
 import "server-only";
 import { SITE_NAME, SITE_URL } from "@/constants/site";
 
-// Nominatim の生レスポンス型 (module-private)。外部に export しない。
-interface NominatimPlace {
-  lat: string;
-  lon: string;
-  display_name: string;
-}
-
-export interface GeocodeResult {
+interface GeocodeResult {
   latitude: number;
   longitude: number;
   displayName: string;
@@ -41,7 +34,7 @@ export const geocodePlace = async (
 
   if (!res.ok) throw new Error(`nominatim_http_${res.status}`);
 
-  const places = (await res.json()) as NominatimPlace[];
+  const places = await res.json();
   const place = places[0];
   if (!place) return null;
 

@@ -1,23 +1,11 @@
 import "server-only";
 
-// Open-Meteo の生レスポンス型 (module-private)。外部に export しない。
-interface OpenMeteoResponse {
-  hourly: {
-    time: string[];
-    uv_index: number[];
-  };
-  daily: {
-    time: string[];
-    uv_index_max: number[];
-  };
-}
-
-export interface UvForecast {
-  /** ["2026-07-06", ...] JST 日付 (最大3日) */
+interface UvForecast {
+  /** ["2026-07-06", ...] JST 日付 (7日分) */
   dailyDates: string[];
   /** dailyDates と同じ並びの日最大UVインデックス */
   dailyUvMax: number[];
-  /** ["2026-07-06T00:00", ...] 1時間毎 (72件) */
+  /** ["2026-07-06T00:00", ...] 1時間毎 (168件) */
   hourlyTimes: string[];
   /** hourlyTimes と同じ並びのUVインデックス */
   hourlyUv: number[];
@@ -26,7 +14,7 @@ export interface UvForecast {
 const OPEN_METEO_ENDPOINT = "https://api.open-meteo.com/v1/forecast";
 
 /**
- * 緯度・経度から3日間・1時間毎のUVインデックス予報を取得する (Open-Meteo)。
+ * 緯度・経度から7日間・1時間毎のUVインデックス予報を取得する (Open-Meteo)。
  * 気象データは1時間毎に更新されるため 1h キャッシュする。
  */
 export const fetchUvForecast = async (
@@ -39,12 +27,15 @@ export const fetchUvForecast = async (
   url.searchParams.set("hourly", "uv_index");
   url.searchParams.set("daily", "uv_index_max");
   url.searchParams.set("timezone", "Asia/Tokyo");
-  url.searchParams.set("forecast_days", "3");
+  url.searchParams.set("forecast_days", "7");
 
   const res = await fetch(url, { next: { revalidate: 3600 } });
   if (!res.ok) throw new Error(`open_meteo_http_${res.status}`);
 
-  const json = (await res.json()) as OpenMeteoResponse;
+  const json: {
+    hourly: { time: string[]; uv_index: number[] };
+    daily: { time: string[]; uv_index_max: number[] };
+  } = await res.json();
 
   return {
     dailyDates: json.daily.time,
