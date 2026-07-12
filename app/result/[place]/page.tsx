@@ -17,18 +17,6 @@ const decodePlace = (raw: string): string => {
   }
 };
 
-// skin/spf は URL クエリ由来で改ざん・欠損があり得るため、想定値のみ採用し
-// それ以外はデフォルト (肌タイプ3 / SPF30) に丸めてから計算に渡す。
-const clampSkin = (raw?: string): number => {
-  const n = Number(raw);
-  return Number.isInteger(n) && n >= 1 && n <= 6 ? n : 3;
-};
-
-const parseSpf = (raw?: string): number => {
-  const n = Number(raw);
-  return [1, 15, 30, 50].includes(n) ? n : 30;
-};
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const place = decodePlace((await params).place);
   return {
@@ -45,14 +33,8 @@ export default async function Page({ params, searchParams }: Props) {
   const { skin, spf } = await searchParams;
 
   return (
-    <PageContainer place={place}>
-      {(result) => (
-        <PageComponent
-          result={result}
-          skin={clampSkin(skin)}
-          spf={parseSpf(spf)}
-        />
-      )}
+    <PageContainer place={place} skin={skin} spf={spf}>
+      {(result) => <PageComponent result={result} />}
     </PageContainer>
   );
 }

@@ -4,15 +4,26 @@ import { serverFetcher } from "@/lib/fetcher/server";
 
 interface Props {
   place: string;
+  /** URL クエリ由来の生の値。バリデーションと算定は API 側に委ねる。 */
+  skin?: string;
+  spf?: string;
   children: (result: UvResult) => React.ReactNode;
 }
 
-export const PageContainer = async ({ place, children }: Props) => {
-  // 地名が見つからない / 取得失敗時は null を受けて 404 に落とす。
-  const result = await serverFetcher(
-    `/api/uv?place=${encodeURIComponent(place)}`,
-    { schema: UvResultSchema, throwErr: false },
-  );
+export const PageContainer = async ({
+  place,
+  skin,
+  spf,
+  children,
+}: Props) => {
+  const query = new URLSearchParams({ place });
+  if (skin) query.set("skin", skin);
+  if (spf) query.set("spf", spf);
+
+  const result = await serverFetcher(`/api/uv?${query.toString()}`, {
+    schema: UvResultSchema,
+    throwErr: false,
+  });
   if (!result) notFound();
 
   return children(result);

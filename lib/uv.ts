@@ -1,5 +1,7 @@
-// 日焼け時間計算とUVリスク判定の純粋ロジック。
-// クライアント (SunburnCard) / サーバ (API Route) の双方から使うため server-only にしない。
+import "server-only";
+
+// 日焼け時間計算とUVリスク判定の中核ロジック。API Route (サーバ) 側でのみ実行し、
+// 算定結果を整形して返すことでクライアントに計算ロジックを露出させない。
 
 /** 肌タイプ (Fitzpatrick Scale) 別の基準時間 (分) ※UV=1 のときに日焼けするまでの時間 */
 const BASE_MINUTES: Record<number, number> = {
@@ -10,22 +12,6 @@ const BASE_MINUTES: Record<number, number> = {
   5: 400, // 濃い
   6: 500, // 非常に濃い
 };
-
-export const SKIN_TYPES = [
-  { value: 1, label: "タイプ1 — 超白肌（すぐ赤くなり黒くならない）" },
-  { value: 2, label: "タイプ2 — 白肌（赤くなりやすい）" },
-  { value: 3, label: "タイプ3 — 普通（標準的な日本人の肌）" },
-  { value: 4, label: "タイプ4 — やや濃い（赤くなりにくい）" },
-  { value: 5, label: "タイプ5 — 濃い（ほとんど赤くならない）" },
-  { value: 6, label: "タイプ6 — 非常に濃い（赤くならない）" },
-] as const;
-
-export const SPF_OPTIONS = [
-  { value: 1, label: "使わない" },
-  { value: 15, label: "SPF15" },
-  { value: 30, label: "SPF30" },
-  { value: 50, label: "SPF50" },
-] as const;
 
 /**
  * 日焼けするまでの時間 (分) を計算する。UV=0 のときは日焼けしないので null。

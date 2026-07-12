@@ -6,11 +6,9 @@ import { UVTabs } from "./UVTabs";
 
 interface Props {
   result: UvResult;
-  skin: number;
-  spf: number;
 }
 
-export const PageComponent = ({ result, skin, spf }: Props) => (
+export const PageComponent = ({ result }: Props) => (
   <div className="mx-auto flex max-w-3xl flex-col gap-6">
     <div>
       <Link
@@ -27,7 +25,7 @@ export const PageComponent = ({ result, skin, spf }: Props) => (
       <p className="text-base-content/60 mt-1 text-xs">{result.displayName}</p>
     </div>
 
-    <UVTabs days={result.days} skin={skin} spf={spf} />
+    <UVTabs days={result.days} spf={result.spf} />
 
     <ForecastNotice />
   </div>

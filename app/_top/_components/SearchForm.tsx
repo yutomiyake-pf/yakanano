@@ -6,15 +6,17 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaSun } from "react-icons/fa6";
 import { z } from "zod";
-import { SKIN_TYPES, SPF_OPTIONS } from "@/lib/uv";
+import {
+  SKIN_TYPES,
+  SPF_OPTIONS,
+  VALID_SKINS,
+  VALID_SPFS,
+} from "@/constants/uv";
 
 // 前回検索した入力内容を localStorage に保持するキー。
 const LAST_PLACE_KEY = "yakanai:lastPlace";
 const LAST_SKIN_KEY = "yakanai:lastSkin";
 const LAST_SPF_KEY = "yakanai:lastSpf";
-
-const VALID_SKINS = SKIN_TYPES.map((t) => t.value) as number[];
-const VALID_SPFS = SPF_OPTIONS.map((o) => o.value) as number[];
 
 const schema = z.object({
   place: z.string().trim().min(1, "地名を入力してください"),

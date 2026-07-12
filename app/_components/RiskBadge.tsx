@@ -1,7 +1,7 @@
-import type { RiskLevel } from "@/lib/uv";
+import type { Risk } from "@/app/api/uv/type";
 
 interface Props {
-  risk: RiskLevel;
+  risk: Risk;
   size?: "sm" | "md" | "lg";
 }
 
@@ -11,8 +11,6 @@ const sizeClass: Record<NonNullable<Props["size"]>, string> = {
   lg: "text-base px-4 py-1.5",
 };
 
-// リスクレベルの色は設計書 §5 の5段階 (緑/黄/橙/赤/紫)。DaisyUI の badge 色では
-// 5段階を表現しきれないため、uv.ts が持つ生の色をインラインで当てる。
 export const RiskBadge = ({ risk, size = "md" }: Props) => (
   <span
     className={`inline-flex items-center gap-1 rounded-full font-bold text-white ${sizeClass[size]}`}
