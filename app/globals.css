@@ -1,12 +1,12 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: yakanai --default;
+  themes: yakanano --default;
 }
 @plugin "@tailwindcss/typography";
 
 /* 日差しを感じさせるサニーテーマ (暖色ベース) */
 @plugin "daisyui/theme" {
-  name: "yakanai";
+  name: "yakanano";
   default: true;
   prefersdark: false;
   color-scheme: light;

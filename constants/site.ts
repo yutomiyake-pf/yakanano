@@ -1,12 +1,12 @@
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-export const SITE_NAME = "yakanai";
+export const SITE_NAME = "yakanano";
 
 export const SITE_COMPANY = "Astra Tech株式会社";
 
 // 空文字なら Google Analytics を読み込まない。
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
+export const GA_MEASUREMENT_ID = "";
 
 export const SITE_TAGLINE = "今日、何分で日焼けする？";
 

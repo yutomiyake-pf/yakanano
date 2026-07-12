@@ -1,4 +1,4 @@
-# yakanai — Agent Guide
+# yakanano — Agent Guide
 
 「今日、何分で日焼けする？」を判定する UV 日焼けリスクチェッカー。DB なし・認証なし・外部 API のみで動作する。
 
@@ -11,7 +11,7 @@ Claude が本プロジェクトで作業するうえで最低限知っておく�
 | Next.js                 | 16.2 (App Router) | `params` / `searchParams` は `Promise`                                  |
 | React                   | 19.2              | controlled input のチェックが厳格                                       |
 | Tailwind CSS            | 4.x               | `@tailwindcss/postcss` 経由。`tailwind.config.ts` は不要                |
-| DaisyUI                 | 5.x               | `globals.css` の `@plugin "daisyui"` + カスタムテーマ `yakanai`         |
+| DaisyUI                 | 5.x               | `globals.css` の `@plugin "daisyui"` + カスタムテーマ `yakanano`         |
 | Recharts                | 3.x               | 1時間毎の UV 推移を折れ線グラフで描画（`"use client"` 配下のみ）         |
 | TypeScript              | 5.x               | strict 前提                                                             |
 | zod                     | 4.x               | `z.url()` `z.coerce.number()` 等がトップレベル                          |
@@ -25,7 +25,7 @@ Claude が本プロジェクトで作業するうえで最低限知っておく�
 1. **外部 API 呼び出しは必ず API Route 経由**: Nominatim / Open-Meteo へのアクセスは `lib/nominatim/*` `lib/openmeteo/*`（`import "server-only"`）にラップし、`app/api/uv/route.ts` から呼ぶ。Server / Client Component からは自前 API Route を fetch する。
 2. **キャッシュは用途別に明示**: Nominatim は `revalidate: 86400`（24h、座標は不変 + 1req/s 制限回避）、Open-Meteo は `revalidate: 3600`（1h、気象は1h更新）。
 3. **認証なし・DB なし**: ログイン不要。`firebase` / `next-auth` 等の依存を追加しない。
-4. **UI は DaisyUI + Tailwind 一択**: 独自 CSS Module や styled-components を導入しない。テーマは `globals.css` のサニーテーマ `yakanai`。UV リスク5段階の色（緑/黄/橙/赤/紫）は DaisyUI では表現しきれないため `lib/uv.ts` の生の色を使う。
+4. **UI は DaisyUI + Tailwind 一択**: 独自 CSS Module や styled-components を導入しない。テーマは `globals.css` のサニーテーマ `yakanano`。UV リスク5段階の色（緑/黄/橙/赤/紫）は DaisyUI では表現しきれないため `lib/uv.ts` の生の色を使う。
 5. **コメントは最小限**: 「なぜそう書いたか」が非自明な時のみ。
 6. **Server Component を既定とする**: `"use client"` はフォーム入力・タブ切替（useState）・Recharts など対話/ブラウザ API が必要な箇所のみ。
 7. **自前 API Route の呼び出しは `lib/fetcher` 経由**: Server からは `serverFetcher`、Client からは `clientFetcher`。レスポンスは zod スキーマで検証する。
@@ -37,7 +37,7 @@ Claude が本プロジェクトで作業するうえで最低限知っておく�
 ## ディレクトリ構成 (要点)
 
 ```
-yakanai/
+yakanano/
 ├── app/
 │   ├── page.tsx                       # トップ: PageComponent 結線のみ
 │   ├── _components/                   # アプリ共通 UI

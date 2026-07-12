@@ -3,7 +3,7 @@ import "server-only";
 // OG 画像で使う日本語 + ASCII をあらかじめ列挙し、Google Fonts の subset で一括取得する。
 // 全 OG 画像が同じ subset を再利用するため CDN 側のキャッシュヒット率が上がる。
 const OG_FONT_TEXT =
-  "yakanai今日何分で日焼けする？紫外線指数UVリスク低中高非常極端SPF分対策" +
+  "yakanano今日何分で日焼けする？紫外線指数UVリスク低中高非常極端SPF分対策" +
   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
   " !\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 

@@ -14,9 +14,9 @@ import {
 } from "@/constants/uv";
 
 // 前回検索した入力内容を localStorage に保持するキー。
-const LAST_PLACE_KEY = "yakanai:lastPlace";
-const LAST_SKIN_KEY = "yakanai:lastSkin";
-const LAST_SPF_KEY = "yakanai:lastSpf";
+const LAST_PLACE_KEY = "yakanano:lastPlace";
+const LAST_SKIN_KEY = "yakanano:lastSkin";
+const LAST_SPF_KEY = "yakanano:lastSpf";
 
 const schema = z.object({
   place: z.string().trim().min(1, "地名を入力してください"),
