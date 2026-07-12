@@ -9,6 +9,8 @@ interface UvForecast {
   hourlyTimes: string[];
   /** hourlyTimes と同じ並びのUVインデックス */
   hourlyUv: number[];
+  /** hourlyTimes と同じ並びの WMO 天気コード */
+  hourlyWeatherCode: number[];
 }
 
 const OPEN_METEO_ENDPOINT = "https://api.open-meteo.com/v1/forecast";
@@ -24,7 +26,7 @@ export const fetchUvForecast = async (
   const url = new URL(OPEN_METEO_ENDPOINT);
   url.searchParams.set("latitude", String(latitude));
   url.searchParams.set("longitude", String(longitude));
-  url.searchParams.set("hourly", "uv_index");
+  url.searchParams.set("hourly", "uv_index,weather_code");
   url.searchParams.set("daily", "uv_index_max");
   url.searchParams.set("timezone", "Asia/Tokyo");
   url.searchParams.set("forecast_days", "7");
@@ -33,7 +35,7 @@ export const fetchUvForecast = async (
   if (!res.ok) throw new Error(`open_meteo_http_${res.status}`);
 
   const json: {
-    hourly: { time: string[]; uv_index: number[] };
+    hourly: { time: string[]; uv_index: number[]; weather_code: number[] };
     daily: { time: string[]; uv_index_max: number[] };
   } = await res.json();
 
@@ -42,5 +44,6 @@ export const fetchUvForecast = async (
     dailyUvMax: json.daily.uv_index_max,
     hourlyTimes: json.hourly.time,
     hourlyUv: json.hourly.uv_index,
+    hourlyWeatherCode: json.hourly.weather_code,
   };
 };

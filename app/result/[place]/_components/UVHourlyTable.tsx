@@ -1,4 +1,5 @@
 import type { HourlyUv } from "@/app/api/uv/type";
+import { WeatherIcon } from "@/app/_components/WeatherIcon";
 
 interface Props {
   hourly: HourlyUv[];
@@ -12,6 +13,7 @@ export const UVHourlyTable = ({ hourly }: Props) => (
           <th>時刻</th>
           <th>UV指数</th>
           <th>リスク</th>
+          <th>天気</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +27,16 @@ export const UVHourlyTable = ({ hourly }: Props) => (
                 style={{ backgroundColor: h.riskColor }}
               />
               <span className="ml-2 align-middle text-xs">{h.riskLabel}</span>
+            </td>
+            <td>
+              <span className="inline-flex items-center gap-1">
+                <WeatherIcon
+                  weatherKey={h.weatherKey}
+                  label={h.weatherLabel}
+                  className="text-2xl"
+                />
+                <span className="align-middle text-xs">{h.weatherLabel}</span>
+              </span>
             </td>
           </tr>
         ))}

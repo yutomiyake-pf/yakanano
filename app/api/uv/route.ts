@@ -3,6 +3,7 @@ import { clampSkin, parseSpf } from "@/constants/uv";
 import { geocodePlace } from "@/lib/nominatim/geocode";
 import { fetchUvForecast } from "@/lib/openmeteo/forecast";
 import { calcSunburnTime, formatMinutes, getRiskLevel } from "@/lib/uv";
+import { getWeather } from "@/lib/weather";
 import {
   UvResultSchema,
   type HourlyUv,
@@ -27,13 +28,14 @@ const toRisk = (uvIndex: number): Risk => {
 };
 
 // Open-Meteo は daily(日付) と hourly(168件のフラット配列) を別々に返すため、
-// フラットな hourly を日付ごとにまとめ直し、日中のみに絞り、リスク・日焼け時間まで
+// フラットな hourly を日付ごとにまとめ直し、日中のみに絞り、リスク・天気・日焼け時間まで
 // 算定済みの UvDay[] に整形する (クライアントは表示するだけにする)。
 const buildDays = (
   dates: string[],
   uvMax: number[],
   hourlyTimes: string[],
   hourlyUv: number[],
+  hourlyWeatherCode: number[],
   skin: number,
   spf: number,
 ): UvDay[] =>
@@ -46,15 +48,18 @@ const buildDays = (
       // "2026-07-06T13:00" の 11〜12 文字目 = 時 ("13")。日中 (6〜18時) 以外は除外。
       const hour = Number(time.slice(11, 13));
       if (hour < DAY_START_HOUR || hour > DAY_END_HOUR) return;
-      // 同じ添字 j の UV 値を対応付け。小数第1位に丸める (欠損は 0 扱い)。
+      // 同じ添字 j の UV 値・天気コードを対応付け。UV は小数第1位に丸める (欠損は 0 扱い)。
       const uv = Math.round((hourlyUv[j] ?? 0) * 10) / 10;
       const risk = getRiskLevel(uv);
+      const weather = getWeather(hourlyWeatherCode[j] ?? 3);
       hourly.push({
         hour,
         time,
         uv,
         riskLabel: risk.label,
         riskColor: risk.color,
+        weatherKey: weather.key,
+        weatherLabel: weather.label,
       });
     });
 
@@ -103,12 +108,14 @@ export async function GET(request: NextRequest) {
       forecast.dailyUvMax,
       forecast.hourlyTimes,
       forecast.hourlyUv,
+      forecast.hourlyWeatherCode,
       skin,
       spf,
     ),
   };
 
   const parsed: UvResult = UvResultSchema.parse(res);
+
   console.log(parsed);
 
   return NextResponse.json(parsed);

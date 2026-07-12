@@ -19,6 +19,17 @@ export const HourlyUvSchema = z.object({
   /** その時刻の UV に対応するリスク (テーブルの色分け用) */
   riskLabel: z.string(),
   riskColor: z.string(),
+  /** その時刻の天気カテゴリ (クライアントで key → アイコンを引く) */
+  weatherKey: z.enum([
+    "clear",
+    "partlyCloudy",
+    "cloudy",
+    "fog",
+    "rain",
+    "snow",
+    "thunder",
+  ]),
+  weatherLabel: z.string(),
 });
 export type HourlyUv = z.infer<typeof HourlyUvSchema>;
 
