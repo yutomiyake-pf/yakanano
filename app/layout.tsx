@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   verification: {
     google: "luE1L6y7GS1pc5uGmP9UZ71sKdrlqb6OOVz_TilF8Ok",
   },
+  other: {
+    "google-adsense-account": "ca-pub-2781765293368238",
+  },
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
