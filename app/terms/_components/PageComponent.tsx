@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SITE_COMPANY, SITE_NAME } from "../../../constants/site";
 
 export const PageComponent = () => (
@@ -13,6 +14,13 @@ export const PageComponent = () => (
     <h2>1. サービス内容</h2>
     <p>
       本サービスは、利用者が入力した地名・肌タイプ・日焼け止めのSPF値をもとに、外部の気象・地図サービスから取得した紫外線指数（UVインデックス）を用いて、日焼けまでの目安時間や推奨される紫外線対策を表示する、無料の情報提供サービスです。
+    </p>
+    <p>
+      本サービスには、運営費用に充てるため、第三者配信の広告（Google
+      AdSense）およびアフィリエイト広告を掲載します。広告における Cookie
+      の取扱い等は
+      <Link href="/privacy">プライバシーポリシー</Link>
+      をご確認ください。
     </p>
 
     <h2>2. 免責事項</h2>
