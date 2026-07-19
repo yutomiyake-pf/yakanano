@@ -1,14 +1,16 @@
 import { FaSun } from "react-icons/fa6";
 import { AdBannerCarousel } from "@/app/_components/AdBannerCarousel";
 import { SITE_TAGLINE } from "@/constants/site";
+import { RankingContainer } from "../_containers/RankingContainer";
 import { SearchForm } from "./SearchForm";
+import { UvRankingList } from "./UvRankingList";
 
 export const PageComponent = () => {
   return (
-    <div className="mx-auto max-w-xl">
+    <div className="mx-auto flex max-w-xl flex-col gap-8">
       <AdBannerCarousel />
 
-      <div className="mb-8 text-center">
+      <div className="text-center">
         <div className="text-primary mb-3 flex justify-center">
           <FaSun className="text-5xl" />
         </div>
@@ -23,6 +25,14 @@ export const PageComponent = () => {
           <SearchForm />
         </div>
       </div>
+
+      <RankingContainer>
+        {(ranking) =>
+          ranking && ranking.items.length > 0 ? (
+            <UvRankingList ranking={ranking} />
+          ) : null
+        }
+      </RankingContainer>
     </div>
   );
 };

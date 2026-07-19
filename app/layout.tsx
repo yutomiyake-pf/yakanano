@@ -94,7 +94,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="text-base-content font-sans min-h-screen flex flex-col">
-        <main className="container mx-auto flex-1 px-4 sm:px-6 lg:px-8 py-8">
+        <main className="container mx-auto flex-1 overflow-x-clip px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </main>
 
