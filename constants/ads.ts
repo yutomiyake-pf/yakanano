@@ -61,4 +61,20 @@ export const AD_BANNERS: AdBanner[] = [
     width: 300,
     height: 250,
   },
+  {
+    href: "https://px.a8.net/svt/ejp?a8mat=4B7YP7+8HFEVU+4RWC+HXKQP",
+    imgSrc:
+      "https://www24.a8.net/svt/bgt?aid=260712043513&wid=002&eno=01&mid=s00000022278003012000&mc=1",
+    pixelSrc: "https://www18.a8.net/0.gif?a8mat=4B7YP7+8HFEVU+4RWC+HXKQP",
+    width: 300,
+    height: 250,
+  },
+  {
+    href: "https://px.a8.net/svt/ejp?a8mat=4B7YP7+8XI47U+4GNW+TSBE9",
+    imgSrc:
+      "https://www27.a8.net/svt/bgt?aid=260712043540&wid=002&eno=01&mid=s00000020822005003000&mc=1",
+    pixelSrc: "https://www19.a8.net/0.gif?a8mat=4B7YP7+8XI47U+4GNW+TSBE9",
+    width: 300,
+    height: 250,
+  },
 ];
