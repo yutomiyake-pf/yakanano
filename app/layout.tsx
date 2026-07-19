@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import { ServiceWorkerRegister } from "./_components/ServiceWorkerRegister";
 import {
   GA_MEASUREMENT_ID,
   SITE_COMPANY,
@@ -44,6 +45,11 @@ export const metadata: Metadata = {
     "google-adsense-account": "ca-pub-2781765293368238",
   },
   manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: SITE_NAME,
+  },
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -80,6 +86,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#fb923c",
 };
 
 export default function RootLayout({
@@ -116,6 +123,7 @@ export default function RootLayout({
           </aside>
         </footer>
         {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
+        <ServiceWorkerRegister />
       </body>
     </html>
   );

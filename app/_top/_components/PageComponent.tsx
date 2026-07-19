@@ -1,5 +1,6 @@
 import { FaSun } from "react-icons/fa6";
 import { AdBannerCarousel } from "@/app/_components/AdBannerCarousel";
+import { InstallPrompt } from "@/app/_components/InstallPrompt";
 import { SITE_TAGLINE } from "@/constants/site";
 import { RankingContainer } from "../_containers/RankingContainer";
 import { SearchForm } from "./SearchForm";
@@ -33,6 +34,8 @@ export const PageComponent = () => {
           ) : null
         }
       </RankingContainer>
+
+      <InstallPrompt />
     </div>
   );
 };
