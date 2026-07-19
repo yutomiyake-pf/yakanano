@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { clampSkin, parseSpf } from "@/constants/uv";
 import { geocodePlace } from "@/lib/nominatim/geocode";
 import { fetchUvForecast } from "@/lib/openmeteo/forecast";
+import { calcWbgt, getHeatLevel } from "@/lib/outdoor";
 import { calcSunburnTime, formatMinutes, getRiskLevel } from "@/lib/uv";
 import { getWeather } from "@/lib/weather";
 import {
@@ -27,21 +28,41 @@ const toRisk = (uvIndex: number): Risk => {
   };
 };
 
+const toHeat = (wbgts: number[]): UvDay["heat"] => {
+  if (wbgts.length === 0) return undefined;
+  const wbgt = Math.max(...wbgts);
+  return { ...getHeatLevel(wbgt), wbgt };
+};
+
 // Open-Meteo は daily(日付) と hourly(168件のフラット配列) を別々に返すため、
 // フラットな hourly を日付ごとにまとめ直し、日中のみに絞り、リスク・天気・日焼け時間まで
 // 算定済みの UvDay[] に整形する (クライアントは表示するだけにする)。
-const buildDays = (
-  dates: string[],
-  uvMax: number[],
-  hourlyTimes: string[],
-  hourlyUv: number[],
-  hourlyWeatherCode: number[],
-  skin: number,
-  spf: number,
-): UvDay[] =>
+interface ForecastInput {
+  dates: string[];
+  uvMax: number[];
+  hourlyTimes: string[];
+  hourlyUv: number[];
+  hourlyWeatherCode: number[];
+  hourlyTemp: number[];
+  hourlyWetBulb: number[];
+}
+
+const buildDays = (input: ForecastInput, skin: number, spf: number): UvDay[] => {
+  const {
+    dates,
+    uvMax,
+    hourlyTimes,
+    hourlyUv,
+    hourlyWeatherCode,
+    hourlyTemp,
+    hourlyWetBulb,
+  } = input;
+
   // dates は 1 日 1 要素。i 番目の日付に対応する hourly / uvMax を組み立てる。
-  dates.map((date, i) => {
+  return dates.map((date, i) => {
     const hourly: HourlyUv[] = [];
+    const wbgts: number[] = [];
+
     hourlyTimes.forEach((time, j) => {
       // hourly は全日分がフラットに並ぶので、この日付 ("2026-07-06") 始まりのものだけ拾う。
       if (!time.startsWith(date)) return;
@@ -61,6 +82,12 @@ const buildDays = (
         weatherKey: weather.key,
         weatherLabel: weather.label,
       });
+
+      const temp = hourlyTemp[j];
+      const wet = hourlyWetBulb[j];
+      if (typeof temp === "number" && typeof wet === "number") {
+        wbgts.push(calcWbgt(wet, temp));
+      }
     });
 
     const dailyMax = Math.round((uvMax[i] ?? 0) * 10) / 10;
@@ -75,8 +102,10 @@ const buildDays = (
           ? "日焼けしません"
           : `約 ${formatMinutes(sunburnMinutes)}`,
       hourly,
+      heat: toHeat(wbgts),
     };
   });
+};
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
@@ -104,19 +133,21 @@ export async function GET(request: NextRequest) {
     skin,
     spf,
     days: buildDays(
-      forecast.dailyDates,
-      forecast.dailyUvMax,
-      forecast.hourlyTimes,
-      forecast.hourlyUv,
-      forecast.hourlyWeatherCode,
+      {
+        dates: forecast.dailyDates,
+        uvMax: forecast.dailyUvMax,
+        hourlyTimes: forecast.hourlyTimes,
+        hourlyUv: forecast.hourlyUv,
+        hourlyWeatherCode: forecast.hourlyWeatherCode,
+        hourlyTemp: forecast.hourlyTemp,
+        hourlyWetBulb: forecast.hourlyWetBulb,
+      },
       skin,
       spf,
     ),
   };
 
   const parsed: UvResult = UvResultSchema.parse(res);
-
-  console.log(parsed);
 
   return NextResponse.json(parsed);
 }

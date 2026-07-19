@@ -33,6 +33,24 @@ export const HourlyUvSchema = z.object({
 });
 export type HourlyUv = z.infer<typeof HourlyUvSchema>;
 
+const OutdoorLevelKeySchema = z.enum([
+  "low",
+  "moderate",
+  "high",
+  "veryHigh",
+  "extreme",
+]);
+
+/** 熱中症 (日中最大 WBGT の区分)。 */
+export const HeatSchema = z.object({
+  key: OutdoorLevelKeySchema,
+  label: z.string(),
+  color: z.string(),
+  /** 日中最大の WBGT(暑さ指数, ℃) */
+  wbgt: z.number(),
+});
+export type Heat = z.infer<typeof HeatSchema>;
+
 export const UvDaySchema = z.object({
   /** "2026-07-06" (JST) */
   date: z.string(),
@@ -45,6 +63,8 @@ export const UvDaySchema = z.object({
   sunburnLabel: z.string(),
   /** 日中 (6〜18時) の1時間毎UV */
   hourly: z.array(HourlyUvSchema),
+  /** 熱中症 (取得できた日のみ) */
+  heat: HeatSchema.optional(),
 });
 export type UvDay = z.infer<typeof UvDaySchema>;
 

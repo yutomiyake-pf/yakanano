@@ -32,4 +32,6 @@ export const SITE_KEYWORDS = [
   "紫外線 強い",
   "UV速報",
   "今日 紫外線",
+  "熱中症",
+  "暑さ指数",
 ];
