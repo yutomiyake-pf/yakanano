@@ -3,7 +3,10 @@ import { FaArrowLeft, FaLocationDot } from "react-icons/fa6";
 import type { UvResult } from "@/app/api/uv/type";
 import { AdBannerCarousel } from "@/app/_components/AdBannerCarousel";
 import { ForecastNotice } from "@/app/_components/ForecastNotice";
+import { SITE_URL } from "@/constants/site";
+import { buildShareText, buildShareUrl } from "@/lib/share";
 import { SaveLastSearch } from "./SaveLastSearch";
+import { ShareButtons } from "./ShareButtons";
 import { UVTabs } from "./UVTabs";
 
 interface Props {
@@ -31,6 +34,11 @@ export const PageComponent = ({ result }: Props) => (
     </div>
 
     <UVTabs days={result.days} spf={result.spf} />
+
+    <ShareButtons
+      shareUrl={buildShareUrl(SITE_URL, result)}
+      text={buildShareText(result)}
+    />
 
     <ForecastNotice />
   </div>
