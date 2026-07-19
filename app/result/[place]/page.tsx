@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const place = decodePlace((await params).place);
   return {
     title: `${place} の紫外線・日焼けリスク`,
-    description: `${place} の今日から7日間の紫外線指数（UVインデックス）と、日焼けまでの時間・必要なSPFを判定します。`,
+    description: `${place} の今日から7日間の紫外線指数（UVインデックス）と、日焼けまでの時間・必要なSPFを判定します。紫外線に加え、熱中症（暑さ指数）の目安も確認できます。`,
     alternates: { canonical: `/result/${encodeURIComponent(place)}` },
     // 主要都市 (TOPランキングから遷移する pref+name) のみインデックス。
     // 任意入力の地名は無限に増えるためnoindex。

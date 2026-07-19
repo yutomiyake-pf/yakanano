@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FaTemperatureHalf } from "react-icons/fa6";
 import type { UvDay } from "@/app/api/uv/type";
 import { RiskBadge } from "@/app/_components/RiskBadge";
 import { dayjs } from "@/lib/dayjs";
@@ -47,6 +48,21 @@ export const UVTabs = ({ days, spf }: Props) => {
               <div className="text-2xl font-bold">
                 日最大UV指数 {day.uvMax}
               </div>
+              {day.heat && (
+                <div
+                  className="text-base-content/70 mt-1 flex items-center gap-1.5 text-xs"
+                  title="日陰を想定した暑さ指数(WBGT)の推定値。直射日光下では実際はより高くなることがあります。"
+                >
+                  <FaTemperatureHalf className="text-base-content/50" />
+                  <span>熱中症（暑さ指数）WBGT {day.heat.wbgt}</span>
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] font-bold text-white"
+                    style={{ backgroundColor: day.heat.color }}
+                  >
+                    {day.heat.label}
+                  </span>
+                </div>
+              )}
             </div>
             <RiskBadge risk={day.risk} size="lg" />
           </div>
