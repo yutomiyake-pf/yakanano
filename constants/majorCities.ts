@@ -236,3 +236,14 @@ export const MAJOR_CITIES: MajorCity[] = [
   { name: "宜野湾市", pref: "沖縄県", lat: 26.2817, lon: 127.7784 },
   { name: "うるま市", pref: "沖縄県", lat: 26.3788, lon: 127.8582 },
 ];
+
+/** インデックス対象の正規スラッグ ("鹿児島県奄美市")。ランキングのリンク先と同形式。 */
+export const MAJOR_CITY_SLUGS: readonly string[] = MAJOR_CITIES.map(
+  (c) => `${c.pref}${c.name}`,
+);
+
+const MAJOR_CITY_SLUG_SET = new Set(MAJOR_CITY_SLUGS);
+
+/** place（デコード済み地名）が主要都市の正規スラッグと完全一致するか。 */
+export const isMajorCitySlug = (place: string): boolean =>
+  MAJOR_CITY_SLUG_SET.has(place);

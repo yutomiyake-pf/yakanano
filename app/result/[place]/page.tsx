@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isMajorCitySlug } from "@/constants/majorCities";
 import { PageComponent } from "./_components/PageComponent";
 import { PageContainer } from "./_containers/PageContainer";
 
@@ -23,8 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${place} の紫外線・日焼けリスク`,
     description: `${place} の今日から7日間の紫外線指数（UVインデックス）と、日焼けまでの時間・必要なSPFを判定します。`,
     alternates: { canonical: `/result/${encodeURIComponent(place)}` },
-    // 地名の組み合わせは無限にあるため重複インデックスを防ぐ。
-    robots: { index: false, follow: true },
+    // 主要都市 (TOPランキングから遷移する pref+name) のみインデックス。
+    // 任意入力の地名は無限に増えるためnoindex。
+    robots: { index: isMajorCitySlug(place), follow: true },
   };
 }
 
