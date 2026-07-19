@@ -7,16 +7,16 @@ import { useForm } from "react-hook-form";
 import { FaSun } from "react-icons/fa6";
 import { z } from "zod";
 import {
+  LAST_PLACE_KEY,
+  LAST_SKIN_KEY,
+  LAST_SPF_KEY,
+} from "@/constants/storage";
+import {
   SKIN_TYPES,
   SPF_OPTIONS,
   VALID_SKINS,
   VALID_SPFS,
 } from "@/constants/uv";
-
-// 前回検索した入力内容を localStorage に保持するキー。
-const LAST_PLACE_KEY = "yakanano:lastPlace";
-const LAST_SKIN_KEY = "yakanano:lastSkin";
-const LAST_SPF_KEY = "yakanano:lastSpf";
 
 const schema = z.object({
   place: z.string().trim().min(1, "地名を入力してください"),
@@ -61,10 +61,8 @@ export const SearchForm = ({
     if (VALID_SPFS.includes(savedSpf)) setValue("spf", savedSpf);
   }, [defaultPlace, setValue]);
 
+  // 保存は結果ページの SaveLastSearch に集約 (直流入も履歴に残すため)。ここでは遷移のみ。
   const onSubmit = handleSubmit(({ place, skin, spf }) => {
-    localStorage.setItem(LAST_PLACE_KEY, place);
-    localStorage.setItem(LAST_SKIN_KEY, String(skin));
-    localStorage.setItem(LAST_SPF_KEY, String(spf));
     router.push(
       `/result/${encodeURIComponent(place)}?skin=${skin}&spf=${spf}`,
     );
