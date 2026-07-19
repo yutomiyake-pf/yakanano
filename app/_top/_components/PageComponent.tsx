@@ -9,6 +9,8 @@ import { UvRankingList } from "./UvRankingList";
 export const PageComponent = () => {
   return (
     <div className="mx-auto flex max-w-xl flex-col gap-8">
+      <InstallPrompt />
+
       <AdBannerCarousel />
 
       <div className="text-center">
@@ -34,8 +36,6 @@ export const PageComponent = () => {
           ) : null
         }
       </RankingContainer>
-
-      <InstallPrompt />
     </div>
   );
 };
